@@ -14,13 +14,11 @@
         /* Left section for food input and custom food form */
         .form-section {
             flex: 1;
-            padding: 20px;
         }
 
         /* Right section for food table and totals */
         .table-section {
             flex: 1;
-            padding: 20px;
         }
 
         /* Input group layout for label and input */
@@ -51,7 +49,6 @@
         }
 
         th, td {
-            padding: 8px;
             text-align: left;
         }
     </style>
@@ -62,7 +59,14 @@
     <div class="container">
         <!-- Left section: Food selection and custom food form -->
         <div class="form-section">
+            <h2>Add meal</h2>
+
+            <label for="meal">Select a meal:</label>
+            <select id="meal"></select>
+            <button id="addMealBtn">Add meal</button>
+
             <h2>Add Food</h2>
+
             <label for="food">Select a food:</label>
             <select id="food"></select>
             <button id="addFoodBtn">Add Food</button>

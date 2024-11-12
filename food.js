@@ -8,14 +8,26 @@ const FOODS = [
     ['mince100g', 174, 27, 0, 7],
     ['jamhoneyTSP', 20, 0, 4, 0],
     ['bacon', 60, 5, 0, 5],
-    ['mcdlargefries', 444, 4, 55, 22],
-    ['mcdmayochicken', 282, 12, 36, 10],
-    ['mcdbeef', 90, 8, 0, 7],
-    ['mcdbeefbreakfast', 282, 27, 2, 19],
-    ['supernoodles', 380, 7, 50, 17],
+    ['mcd largefries', 444, 4, 55, 22],
+    ['mcd mediumfries', 337, 3, 42, 17],
+    ['mcd mayochicken', 282, 12, 36, 10],
+    ['mcd big mac', 493, 26, 42, 24],
+    ['mcd beef', 90, 8, 0, 7],
+    ['mcd beefbreakfast', 282, 27, 2, 19],
+    ['demae ramen', 91, 2, 11, 4],
     ['baton', 550, 20, 100, 1],
-    ['curstyroll', 147, 5, 30, 0]
+    ['curstyroll', 147, 5, 30, 0],
+    ['greekyogurt 100g', 103, 4, 4, 8],
+    ['mixedberries 100g', 30, 1, 5, 0],
+    ['granola 100g', 435, 10, 65, 13],
+    ['horalky bar', 271, 4, 26, 16],
+
 ];
+const MEALS = {
+    "Beef Ramen": [FOODS[6], FOODS[6], FOODS[15]],
+    "Pre-workout": [FOODS[18], FOODS[19], FOODS[20]],
+    "McDonalds 2.99": [FOODS[12], FOODS[10]],
+}
 const CURRENT_FOODS = JSON.parse(localStorage.getItem("food")) || [];
 const TOTAL = [0, 0, 0, 0, 0];
 
@@ -29,11 +41,27 @@ for (const food of FOODS) {
     el.food.add(newFood);
 }
 
+for (const meal in MEALS) {
+    const m = MEALS[meal];
+    const newMeal = document.createElement("option");
+    newMeal.value = meal;
+    newMeal.textContent = meal;
+    el.meal.add(newMeal);
+}
+
 for (const food of CURRENT_FOODS) {
     addFood(food, false);
 }
 
 el.addFoodBtn.addEventListener('click', () => addFood(undefined, true));
+el.addMealBtn.addEventListener('click', () => {
+    const meal = el.meal.value;
+    const selectedMeal = MEALS[meal];
+    if (!selectedMeal) return alert("Meal not found");
+
+    for (const food of selectedMeal) addFood(food, true);
+})
+
 el.clearAll.addEventListener('click', () => {
     document.querySelectorAll('.delete-btn').forEach((btn, index)=> {
         setTimeout(()=>{btn.click()}, index * 100);
