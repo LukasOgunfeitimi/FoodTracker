@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" style="font-family: Century Gothic;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Tracker</title>
+    <style>
+        .input-group {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+        }
+
+        .input-group label {
+            width: 120px;
+            margin-right: 0px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Food Tracker</h1>
+
+    <label for="food">Select a food:</label>
+    <select id="food"></select>
+    <button id="addFoodBtn">Add Food</button>
+
+    <h2>Add Custom Food</h2>
+
+    <div class="input-group">
+        <label for="customFood">Food Name: </label>
+        <input type="text" id="customFood" placeholder="Food name">
+    </div>
+
+    <div class="input-group">
+        <label for="customCalories">Calories: </label>
+        <input type="number" id="customCalories" placeholder="Calories">
+    </div>
+
+    <div class="input-group">
+        <label for="customProtein">Protein: </label>
+        <input type="number" id="customProtein" placeholder="Protein (g)">
+    </div>
+
+    <div class="input-group">
+        <label for="customCarbs">Carbs: </label>
+        <input type="number" id="customCarbs" placeholder="Carbs (g)">
+    </div>
+
+    <div class="input-group">
+        <label for="customFat">Fat: </label>
+        <input type="number" id="customFat" placeholder="Fat (g)">
+    </div>
+
+    <button id="addCustomFoodBtn">Add Custom Food</button>
+    <h2>Food Table</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Food</th>
+                <th>Calories</th>
+                <th>Protein</th>
+                <th>Carbs</th>
+                <th>Fat</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="foodTableBody"></tbody>
+    </table>
+
+    <h2>Totals</h2>
+    <p id="calories">Total: </p>
+
+    <button id="clearAll">Clear</button>
+<script src="food.js"></script>    
+</body>
+</html>
