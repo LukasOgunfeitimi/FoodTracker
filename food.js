@@ -53,6 +53,11 @@ for (const food of CURRENT_FOODS) {
     addFood(food, false);
 }
 
+function updateCaloriesAnimation() {
+    const totalCalories = TOTAL[1];
+    el.calories.style.setProperty('--percent', totalCalories);
+}
+
 el.addFoodBtn.addEventListener('click', () => addFood(undefined, true));
 el.addMealBtn.addEventListener('click', () => {
     const meal = el.meal.value;
@@ -61,12 +66,12 @@ el.addMealBtn.addEventListener('click', () => {
 
     for (const food of selectedMeal) addFood(food, true);
 })
-
+/*
 el.clearAll.addEventListener('click', () => {
     document.querySelectorAll('.delete-btn').forEach((btn, index)=> {
         setTimeout(()=>{btn.click()}, index * 100);
     })
-})
+})*/
 el.addCustomFoodBtn.addEventListener('click', () => {
     const name = el.customFood.value.trim();
     const cal = parseInt(el.customCalories.value, 10);
@@ -95,8 +100,8 @@ function addFood(data, newFood) {
 
     const [name, cal, pro, carb, fat] = selectedFood;
     for (let i = 1; i <= 4; i++) TOTAL[i] += selectedFood[i];
-    el.calories.textContent = "Total: " + TOTAL.slice(1).join(", ");
-
+    //el.calories.textContent = "Total: " + TOTAL.slice(1).join(", ");
+    updateCaloriesAnimation();
     const newRow = document.createElement('tr');
     newRow.innerHTML = `
         <td>${name}</td>
@@ -110,7 +115,8 @@ function addFood(data, newFood) {
 
     newRow.querySelector('.delete-btn').addEventListener('click', () => {
         for (let i = 1; i <= 4; i++) TOTAL[i] -= selectedFood[i];
-        el.calories.textContent = "Total: " + TOTAL.slice(1).join(", ");
+        //el.calories.textContent = "Total: " + TOTAL.slice(1).join(", ");
+        updateCaloriesAnimation();
         newRow.remove();
         CURRENT_FOODS.splice(CURRENT_FOODS.indexOf(selectedFood), 1);
         localStorage.setItem("food", JSON.stringify(CURRENT_FOODS));

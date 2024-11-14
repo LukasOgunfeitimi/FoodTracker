@@ -5,23 +5,83 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Food Tracker</title>
     <style>
-        /* Set up the main container to display items in a row */
+        
+        /* General body styles */
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            font-family: 'Century Gothic', sans-serif;
+        }
+
+        /* Container styling */
         .container {
             display: flex;
-            justify-content: space-between;
+            gap: 40px;
+            margin-top: 20px;
         }
 
-        /* Left section for food input and custom food form */
-        .form-section {
+        /* Section headings */
+        h1 {
+            color: #2d2d2d;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            color: #555;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 5px;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        
+
+        /* Form and table section styling */
+        .form-section, .table-section {
             flex: 1;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        @property --percent {
+            syntax: "<number>";
+            initial-value: 0;
+            inherits: false;
+        }
+        @property --temp {
+            syntax: "<number>";
+            initial-value: 0;
+            inherits: false;
+        }
+        @property --v1 {
+            syntax: "<integer>";
+            initial-value: 0;
+            inherits: false;
+        }
+        @property --v2 {
+            syntax: "<integer>";
+            initial-value: 0;
+            inherits: false;
+        }
+        #calories {
+            padding: 2rem;
+            transition: --percent 0.5s;
+            --temp: calc(var(--percent) );
+            --v1: max(var(--temp) - 0.5, 0);
+            --v2: max((var(--temp) - var(--v1)) * 100 - 0.5, 0);
+            counter-reset: v1 var(--v1) v2 var(--v2);
         }
 
-        /* Right section for food table and totals */
-        .table-section {
-            flex: 1;
+        /* Apply formatting to display the animated number */
+        #calories::before {
+            content: counter(v1);
         }
-
-        /* Input group layout for label and input */
+        /* Input groups for form elements */
         .input-group {
             display: flex;
             align-items: center;
@@ -29,27 +89,72 @@
         }
 
         .input-group label {
-            width: 120px;
-            margin-right: 10px;
+            width: 150px;
+            color: #333;
         }
 
-        .input-group input {
+        .input-group input, select {
             flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
         }
 
-        /* Style for the table */
+        /* Button styles */
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button:focus {
+            outline: none;
+            box-shadow: 0px 0px 4px #333;
+        }
+
+        /* Table styling */
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
 
-        table, th, td {
-            border: 1px solid black;
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
         }
 
-        th, td {
-            text-align: left;
+        th {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 1em;
+        }
+
+        td {
+            background-color: #fafafa;
+        }
+
+        /* Totals styling */
+        #calories {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #2d2d2d;
+            font-weight: bold;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            border-radius: 4px;
         }
     </style>
 </head>
@@ -59,7 +164,7 @@
     <div class="container">
         <!-- Left section: Food selection and custom food form -->
         <div class="form-section">
-            <h2>Add meal</h2>
+            <h2>Add Meal</h2>
 
             <label for="meal">Select a meal:</label>
             <select id="meal"></select>
@@ -74,27 +179,27 @@
             <h2>Add Custom Food</h2>
 
             <div class="input-group">
-                <label for="customFood">Food Name: </label>
+                <label for="customFood">Food Name:</label>
                 <input type="text" id="customFood" placeholder="Food name">
             </div>
 
             <div class="input-group">
-                <label for="customCalories">Calories: </label>
+                <label for="customCalories">Calories:</label>
                 <input type="number" id="customCalories" placeholder="Calories">
             </div>
 
             <div class="input-group">
-                <label for="customProtein">Protein: </label>
+                <label for="customProtein">Protein:</label>
                 <input type="number" id="customProtein" placeholder="Protein (g)">
             </div>
 
             <div class="input-group">
-                <label for="customCarbs">Carbs: </label>
+                <label for="customCarbs">Carbs:</label>
                 <input type="number" id="customCarbs" placeholder="Carbs (g)">
             </div>
 
             <div class="input-group">
-                <label for="customFat">Fat: </label>
+                <label for="customFat">Fat:</label>
                 <input type="number" id="customFat" placeholder="Fat (g)">
             </div>
 
