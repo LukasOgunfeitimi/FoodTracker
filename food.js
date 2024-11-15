@@ -24,8 +24,8 @@ const FOODS = [
 
 ];
 const MEALS = {
-    "Beef Ramen": [FOODS[6], FOODS[6], FOODS[15]],
-    "Pre-workout": [FOODS[18], FOODS[19], FOODS[20]],
+    "Beef Ramen":     [FOODS[6], FOODS[6], FOODS[15]],
+    "Pre-workout":    [FOODS[18], FOODS[19], FOODS[20]],
     "McDonalds 2.99": [FOODS[12], FOODS[10]],
 }
 const CURRENT_FOODS = JSON.parse(localStorage.getItem("food")) || [];
@@ -33,7 +33,7 @@ const TOTAL = [0, 0, 0, 0, 0];
 
 const el = {}
 document.querySelectorAll('[id]').forEach(element => el[element.id] = element);
-
+    
 for (const food of FOODS) {
     const newFood = document.createElement("option");
     newFood.value = food[0];
@@ -53,25 +53,25 @@ for (const food of CURRENT_FOODS) {
     addFood(food, false);
 }
 
-function updateCaloriesAnimation() {
-    const totalCalories = TOTAL[1];
-    el.calories.style.setProperty('--percent', totalCalories);
+function updateNutrient(elementId, value) {
+    const element = document.getElementById(elementId);
+    element.style.setProperty('--' + elementId, value);
 }
 
 el.addFoodBtn.addEventListener('click', () => addFood(undefined, true));
 el.addMealBtn.addEventListener('click', () => {
-    const meal = el.meal.value;
-    const selectedMeal = MEALS[meal];
-    if (!selectedMeal) return alert("Meal not found");
+        const meal = el.meal.value;
+        const selectedMeal = MEALS[meal];
+        if (!selectedMeal) return alert("Meal not found");
 
-    for (const food of selectedMeal) addFood(food, true);
-})
-/*
-el.clearAll.addEventListener('click', () => {
-    document.querySelectorAll('.delete-btn').forEach((btn, index)=> {
-        setTimeout(()=>{btn.click()}, index * 100);
+        for (const food of selectedMeal) addFood(food, true);
     })
-})*/
+    /*
+    el.clearAll.addEventListener('click', () => {
+        document.querySelectorAll('.delete-btn').forEach((btn, index)=> {
+            setTimeout(()=>{btn.click()}, index * 100);
+        })
+    })*/
 el.addCustomFoodBtn.addEventListener('click', () => {
     const name = el.customFood.value.trim();
     const cal = parseInt(el.customCalories.value, 10);
@@ -101,7 +101,11 @@ function addFood(data, newFood) {
     const [name, cal, pro, carb, fat] = selectedFood;
     for (let i = 1; i <= 4; i++) TOTAL[i] += selectedFood[i];
     //el.calories.textContent = "Total: " + TOTAL.slice(1).join(", ");
-    updateCaloriesAnimation();
+    updateNutrient('calories', TOTAL[1]);
+    updateNutrient('protein', TOTAL[2]);
+    updateNutrient('carbs', TOTAL[3]);
+    updateNutrient('fat', TOTAL[4]);
+
     const newRow = document.createElement('tr');
     newRow.innerHTML = `
         <td>${name}</td>
@@ -116,7 +120,10 @@ function addFood(data, newFood) {
     newRow.querySelector('.delete-btn').addEventListener('click', () => {
         for (let i = 1; i <= 4; i++) TOTAL[i] -= selectedFood[i];
         //el.calories.textContent = "Total: " + TOTAL.slice(1).join(", ");
-        updateCaloriesAnimation();
+        updateNutrient('calories', TOTAL[1]);
+        updateNutrient('protein', TOTAL[2]);
+        updateNutrient('carbs', TOTAL[3]);
+        updateNutrient('fat', TOTAL[4]);
         newRow.remove();
         CURRENT_FOODS.splice(CURRENT_FOODS.indexOf(selectedFood), 1);
         localStorage.setItem("food", JSON.stringify(CURRENT_FOODS));
