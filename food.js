@@ -21,7 +21,6 @@ const FOODS = [
     ['mixedberries 100g', 30, 1, 5, 0],
     ['granola 100g', 435, 10, 65, 13],
     ['horalky bar', 271, 4, 26, 16],
-
 ];
 const MEALS = {
     "Beef Ramen":     [FOODS[6], FOODS[6], FOODS[15]],
