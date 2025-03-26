@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import InputField from './InputField';
-import Dropdown from './Dropdown'
-import AddCustomFoodForm from './AddCustomFood'
+import InputField from '../elements/InputField';
+import Dropdown from '../elements/Dropdown'
+import AddCustomFoodForm from '../elements/AddCustomFood'
 
 
 const AddSection = () => {

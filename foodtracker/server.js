@@ -29,10 +29,6 @@ if (!isProduction) {
   app.use(base, sirv('./dist/client', { extensions: [] }))
 }
 
-app.get("/foods", (req, res) => {
-    res.json({ message: "tt"});
-})
-
 app.use('*', async (req, res) => {
   try {
     const url = req.originalUrl.replace(base, '')
