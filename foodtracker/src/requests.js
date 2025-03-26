@@ -1,4 +1,4 @@
-const keys = [47, 64, 87, 65];
+const keys = [0];
 
 const encrypt = (str) =>
 	Array.from(str)
@@ -9,7 +9,7 @@ const encrypt = (str) =>
 
 const decrypt = (str) => encrypt(str);
 
-const headers ={
+const headers = {
 	'Content-Type': 'application/json', // Make sure the Content-Type is application/json
 }
 
@@ -29,11 +29,24 @@ function request(url, method = 'GET', payload) {
 const host = 'http://localhost:2000/';
 
 export default {
-    login: async () => {
-        const res = await request(`${host}exerciser/login`, 'POST', querystring.stringify(creds));
-        profileUUID = res.uuid;
-        return res;
-    },
+    getAllFoods: async () =>
+        await request(`${host}getAllFoods`),
+
+    addFoodToDatabase: async (food) =>
+        await request(`${host}addFoodToDB`, 'POST', food),
+
+    getActiveFoods: async () =>
+      await request(`${host}getActiveFoods`),
+
+    addFoodsToActive: async (food) =>
+      await request(`${host}setActiveFoods`, 'POST', food),
+    
+    getAllMeals: async () =>
+      await request(`${host}getAllMeals`),
+
+    addMealToDatabase: async(meal) =>
+      await request(`${host}addMealToDB`, 'POST', meal),
+
 
     profile: async () => 
         await request(`${host}exerciser/${profileUUID}/profile`, 'GET'),

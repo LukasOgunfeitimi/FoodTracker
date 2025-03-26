@@ -3,15 +3,14 @@ import InputField from './InputField';
 
 const AddCustomFoodForm = ({ onSubmit }) => {
     const [name, setName] = useState('');
-    const [calories, setCalories] = useState('');
-    const [protein, setProtein] = useState('');
-    const [carbs, setCarbs] = useState('');
-    const [fat, setFat] = useState('');
+    const [calories, setCalories] = useState(0);
+    const [protein, setProtein] = useState(0);
+    const [carbs, setCarbs] = useState(0);
+    const [fat, setFat] = useState(0);
   
     const handleSubmit = () => {
-      if (!name || !calories) return alert("Name and Calories are required!");
-      const data = { name, calories, protein, carbs, fat };
-      onSubmit(data);
+      if (!name) return alert("Name!");
+      onSubmit([name, calories, protein, carbs, fat]);
       setName('');
       setCalories('');
       setProtein('');
