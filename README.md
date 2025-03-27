@@ -4,7 +4,7 @@
 A web application designed to help users track their daily food intake, manage meals, and monitor nutritional data. The app allows users to:
 
 - Add foods to the database.
-- Organize foods into meals, which can also be saved in the database.
+- Organise foods into meals, which can also be saved in the database.
 - Add foods or meals to the list of current foods for the day.
 - View the total nutritional breakdown (macros) for the foods consumed.
 
