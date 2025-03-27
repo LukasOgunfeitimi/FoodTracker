@@ -7,7 +7,7 @@ import {
   getActiveFoods, 
   setActiveFoods, 
   addMealToDB,
-  getAllMeals } from './database.js'
+  getAllMeals } from '../foodtracker/database.js'
 
 const app = express()
 

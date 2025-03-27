@@ -1,66 +1,81 @@
-import fs from 'node:fs/promises'
-import express from 'express'
+import express from "express";
+import path from "path";
+import compression from "compression";
 
-const isProduction = process.env.NODE_ENV === 'production'
-const port = process.env.PORT || 5173
-const base = process.env.BASE || '/'
+import { 
+  deleteFoodById, 
+  getAllFoods, 
+  addFoodToDB, 
+  getActiveFoods, 
+  setActiveFoods, 
+  addMealToDB,
+  getAllMeals 
+} from './database.js'
 
-const templateHtml = isProduction
-  ? await fs.readFile('./dist/client/index.html', 'utf-8')
-  : ''
+const keys = [0x7F, 0xE3, 0xA9, 0x1C, 0xD4, 0x56, 0x92, 0xAC, 0xF0, 0xB8, 0x4D, 0x75, 0x6A, 0x3E, 0x01, 0xFC];
+const encrypt = (str) =>
+  Array.from(str)
+    .map((char, index) => 
+      String.fromCharCode(
+        char.charCodeAt(0) ^ keys[index % keys.length]
+    )).join('');
+const decrypt = (str) => encrypt(str)
 
-const app = express()
+
+const app = express();
+
+app.use(compression());
 app.use(express.json());
 
-/** @type {import('vite').ViteDevServer | undefined} */
-let vite
-if (!isProduction) {
-  const { createServer } = await import('vite')
-  vite = await createServer({
-    server: { middlewareMode: true },
-    appType: 'custom',
-    base,
-  })
-  app.use(vite.middlewares)
-} else {
-  const compression = (await import('compression')).default
-  const sirv = (await import('sirv')).default
-  app.use(compression())
-  app.use(base, sirv('./dist/client', { extensions: [] }))
+const sendMsg = (res, body) => {
+  res.send({ data : encrypt(JSON.stringify(body)) })}
+
+const middleware = (req, res, next) => {
+if (req.method !== "GET")
+  req.body = JSON.parse(decrypt(req.body.data));
+next()
 }
 
-app.use('*', async (req, res) => {
-  try {
-    const url = req.originalUrl.replace(base, '')
+app.use(middleware)
 
-    /** @type {string} */
-    let template
-    /** @type {import('./src/entry-server.js').render} */
-    let render
-    if (!isProduction) {
-      template = await fs.readFile('./index.html', 'utf-8')
-      template = await vite.transformIndexHtml(url, template)
-      render = (await vite.ssrLoadModule('/src/entry-server.jsx')).render
-    } else {
-      template = templateHtml
-      render = (await import('./dist/server/entry-server.js')).render
-    }
 
-    const rendered = await render(url)
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, "dist")));
 
-    const html = template
-      .replace(`<!--ssr-outlet-->`, rendered.head ?? '')
-      .replace(`<!--ssr-outlet-->`, rendered.html ?? '')
-
-    res.status(200).set({ 'Content-Type': 'text/html' }).send(html)
-  } catch (e) {
-    vite?.ssrFixStacktrace(e)
-    console.log(e.stack)
-    res.status(500).end(e.stack)
-  }
+app.get("/getAllFoods", async (req, res) => {
+  sendMsg(res, await getAllFoods());
 })
 
-// Start http server
-app.listen(port, () => {
-  console.log(`Server started at http://localhost:${port}`)
+app.get("/getActiveFoods", async (req, res) => {
+  sendMsg(res, await getActiveFoods());
 })
+
+app.get("/getAllMeals", async (req, res) => {
+  sendMsg(res, await getAllMeals());
+})
+
+app.post("/setActiveFoods", async(req, res) => {
+  sendMsg(res, await setActiveFoods(req.body.foods))
+})
+
+app.post("/addFoodToDB", async(req, res) => {
+  sendMsg(res, await addFoodToDB(req.body.food))
+})
+
+app.post("/addMealToDB", async(req, res) => {
+  sendMsg(res, await addMealToDB(req.body))
+})
+
+
+app.delete('/food', async (req, res) => {
+  sendMsg(res, await deleteFoodById(req.body.id));
+})
+
+app.get(`*`, (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
+
+app.listen(3047, () => {
+  console.log(`HTTP Server running at http://localhost:${3047}`);
+});
+

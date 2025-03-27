@@ -59,7 +59,11 @@ const AddSection = ({ setAllFoods, allFoods, setActiveFoods, activeFoods }) => {
 
   const AddFoodtoDatabase = (food) => {
     req.addFoodToDatabase(JSON.stringify({ food }))
-        .then(data => setAllFoods(data))
+        .then(data => {
+          setFoodsToAdd([String(data[0].id)])
+          setFoodToMeal(String(data[0].id))
+          setAllFoods(data)
+        })
   }
 
   const AddFoodToMeal = () => {
@@ -113,7 +117,7 @@ const AddSection = ({ setAllFoods, allFoods, setActiveFoods, activeFoods }) => {
         <div className="text-xl font-semibold text-gray-800 dark:text-white mb-4">Add Meal to database</div>
         <div className="flex flex-col sm:flex-col sm:items-center gap-4 min-h-[48px]">
           <InputField label="Meal name:" type="text" placeholder="Meal name" onChange={(e) => setNewMealName(e.target.value)} />
-          <Dropdown label="Select a meal:" options={allFoods} value={foodToMeal} onChange={handleFoodToMealChange} />
+          <Dropdown label="Select a food:" options={allFoods} onChange={handleFoodToMealChange} />
           <button
             onClick={() => AddFoodToMeal()}
             type="button"

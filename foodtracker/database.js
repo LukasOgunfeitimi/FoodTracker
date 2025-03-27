@@ -8,30 +8,6 @@ const db = new sqlite3.Database('foods.db', (err) => {
   }
 });
 
-const FOODS = [
-  ['egg', 85, 8, 1, 5],
-  ['bread', 55, 2, 9, 1],
-  ['sainsburysbeefskirt', 850, 145, 0, 20],
-  ['sainsburysbagel', 222, 7, 43, 2],
-  ['unclebenswholegrain', 360, 15, 65, 5],
-  ['chickenbreast200g', 212, 48, 0, 2],
-  ['mince100g', 174, 27, 0, 7],
-  ['jamhoneyTSP', 20, 0, 4, 0],
-  ['bacon', 60, 5, 0, 5],
-  ['mcd largefries', 444, 4, 55, 22],
-  ['mcd mediumfries', 337, 3, 42, 17],
-  ['mcd mayochicken', 282, 12, 36, 10],
-  ['mcd big mac', 493, 26, 42, 24],
-  ['mcd beef', 90, 8, 0, 7],
-  ['mcd beefbreakfast', 282, 27, 2, 19],
-  ['demae ramen', 91, 2, 11, 4],
-  ['baton', 550, 20, 100, 1],
-  ['curstyroll', 147, 5, 30, 0],
-  ['greekyogurt 100g', 103, 4, 4, 8],
-  ['mixedberries 100g', 30, 1, 5, 0],
-  ['granola 100g', 435, 10, 65, 13],
-  ['horalky bar', 271, 4, 16],
-];
 
 db.serialize(async () => {
     db.run(

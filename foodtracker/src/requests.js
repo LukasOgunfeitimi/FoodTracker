@@ -1,4 +1,4 @@
-const keys = [0];
+const keys = [0x7F, 0xE3, 0xA9, 0x1C, 0xD4, 0x56, 0x92, 0xAC, 0xF0, 0xB8, 0x4D, 0x75, 0x6A, 0x3E, 0x01, 0xFC];
 
 const encrypt = (str) =>
 	Array.from(str)
@@ -16,7 +16,7 @@ const headers = {
 function request(url, method = 'GET', payload) {
     const options = {
         method,
-		headers,
+		    headers,
         body: payload ? JSON.stringify({
 			data: encrypt(payload)
 		 }) : null,
@@ -26,44 +26,23 @@ function request(url, method = 'GET', payload) {
 		.then(body => Promise.resolve(JSON.parse(decrypt(body.data))));
 }
 
-const host = 'http://localhost:2000/';
-
 export default {
     getAllFoods: async () =>
-        await request(`${host}getAllFoods`),
+      await request(`getAllFoods`),
 
     addFoodToDatabase: async (food) =>
-        await request(`${host}addFoodToDB`, 'POST', food),
+      await request(`addFoodToDB`, 'POST', food),
 
     getActiveFoods: async () =>
-      await request(`${host}getActiveFoods`),
+      await request(`getActiveFoods`),
 
     addFoodsToActive: async (food) =>
-      await request(`${host}setActiveFoods`, 'POST', food),
+      await request(`setActiveFoods`, 'POST', food),
     
     getAllMeals: async () =>
-      await request(`${host}getAllMeals`),
+      await request(`getAllMeals`),
 
     addMealToDatabase: async(meal) =>
-      await request(`${host}addMealToDB`, 'POST', meal),
+      await request(`addMealToDB`, 'POST', meal),
 
-
-    profile: async () => 
-        await request(`${host}exerciser/${profileUUID}/profile`, 'GET'),
-
-    membership: async () => 
-        await request(`${host}exerciser/${profileUUID}/membership`, 'GET'),
-
-    history: async () => {
-        const currentYear = new Date().getFullYear();
-        const endDate = `${currentYear}-12-31T23%3A59%3A59`;
-        const startDate = `2010-01-01T00%3A00%3A00`;
-        return await request(`${host}exercisers/${profileUUID}/check-ins/history?endDate=${endDate}&startDate=${startDate}`, 'GET');
-    },
-
-    deleteFood: async (id) =>
-        await request(`${host}food`, 'DELETE', id),
-
-    gyms: async () => 
-        await request(`${host}thegymgroup/v1.0/exercisers/${profileUUID}/gym-locations`, 'GET')
 };
